@@ -2,7 +2,7 @@
 
 ### Overview
 
-This rendition of Pac-Man, called Beer-Man, is a browser-based game made with only JavaScript and HTML Canvas. The user will guide Beer-Man with either WASD or arrow keys to collect all beer on the map without colliding with any ghosts. The more beer he drinks, the slower he will become. Coffee power-ups will allow Beer-Man to gain a sobering boost of speed and wisdom, restoring his original velocity and gaining the ability to destroy ghosts for points. Can he get his fill before the ghosts come for him? That's up to you!
+Browser-based game made with only JavaScript and HTML Canvas. The user will guide PMan with either WASD or arrow keys to collect all beer on the map without colliding with any ghosts. The more beer he drinks, the slower he will become. Coffee power-ups will allow PMan to gain a sobering boost of speed and wisdom, restoring his original velocity and gaining the ability to destroy ghosts for points. Can he get his fill before the ghosts come for him? That's up to you!
 
 ### Features
 Users should be able to:
