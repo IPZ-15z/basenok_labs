@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<book xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>PMAN</title>
+        <author>
+            <orgname><link xlink:href="https://github.com/IPZ-15z/basenok_labs"
+                >basenok_labs</link></orgname>
+            <address><city>Donetsk</city>        <annotation><para><link xlink:href="mailto:admmelord@gmail.com">admmelord@gmail.com</link></para></annotation></address>
+        </author>
+    </info>
+    <part>
+        <chapter>
+            <title>Overview</title>
+            <para>Browser-based game made with only JavaScript and HTML Canvas. The user will guide
+                PMan with either WASD or arrow keys to collect all beer on the map without colliding
+                with any ghosts. The more beer he drinks, the slower he will become. Coffee
+                power-ups will allow PMan to gain a sobering boost of speed and wisdom, restoring
+                his original velocity and gaining the ability to destroy ghosts for points. Can he
+                get his fill before the ghosts come for him? That's up to you!</para>
+        </chapter>
+        <chapter>
+            <title>Features</title>
+            <para>Users should be able to:</para>
+            <itemizedlist>
+                <listitem>
+                    <para> Enjoy bug-free navigation of the map</para>
+                </listitem>
+                <listitem>
+                    <para> Start, pause, and reset the game at will</para>
+                </listitem>
+                <listitem>
+                    <para> Understand and achieve clear win/lose conditions</para>
+                </listitem>
+                <listitem>
+                    <para> View game instructions, scoring, and lives left at all times</para>
+                </listitem>
+            </itemizedlist>
+        </chapter>
+        <chapter>
+            <title>Buffered Keyboard Input</title>
+            <programlisting>move(walls) {
+    if (this.queuedDir&amp;&amp;!this.willCollide(this.queuedDir, walls, true)) {
+      this.dir=this.queuedDir;
+      this.queuedDir=undefined;
+    }
+    if (!this.willCollide(this.dir, walls, false)) {
+      this.pos= [this.pos[0] +this.dir[0] *this.vel, this.pos[1] +this.dir[1] *this.vel];
+    }
+    this.wrap();
+  }
+
+  turn(dir, walls) {
+    if (!this.willCollide(dir, walls, true)) {
+      this.dir= dir;
+      this.queuedDir=undefined;
+    } else {
+      this.queuedDir= dir;
+    }
+  }</programlisting>
+            <para>Beer-Man will store the most recent direction given, such that moving and turning
+                is smooth. The player can buffer the next direction and watch as Beer-Man will
+                follow that command once it can make that turn.</para>
+        </chapter>
+    </part>
+    <part>
+        <chapter>
+            <title>Bug-Free Key Handlers</title>
+            <programlisting>constkeyBinds= {
+  "W": [0, -1],
+  "A": [-1, 0],
+  "S": [0, 1],
+  "D": [1, 0],
+  "ARROWUP": [0, -1],
+  "ARROWLEFT": [-1, 0],
+  "ARROWDOWN": [0, 1],
+  "ARROWRIGHT": [1, 0]
+};
+
+bindKeyHandlers(e) {
+  constkey=e.key.toUpperCase();
+  if (key ===" ") {
+    if (this.isPaused) {
+      this.isPaused=false;
+      this.intervalID=setInterval(() =>this.step(), 20);
+
+    } else {
+      window.clearInterval(this.intervalID);
+      this.isPaused=true;
+    }
+  }
+  if (keyBinds[key]) {
+    this.game.chars[0].turn(keyBinds[key], this.board.walls);
+  }
+  if (key ==="Y"&amp;&amp;this.restartBuffer>0&amp;&amp;!this.game.chars[0].dying) {
+    window.clearInterval(this.intervalID);
+    this.ctx.clearRect(0, 0, CANVAS_X, CANVAS_Y);
+    this.restarted=true;
+    this.restartBuffer=0;
+    this.start();
+  }
+}</programlisting>
+            <para>The event listener checks for spacebar (resume and pause), WASD/arrow keys
+                (turning), and Y (game restart, disabled during async calls).</para>
+        </chapter>
+        <chapter>
+            <title>Technologies</title>
+            <para>This project will use the following:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>Vanilla JS for game logic</para>
+                </listitem>
+                <listitem>
+                    <para>HTML5 canvas for DOM manipulation and display</para>
+                </listitem>
+                <listitem>
+                    <para>Webpack to bundle the scripts</para>
+                </listitem>
+            </itemizedlist>
+        </chapter>
+    </part>
+</book>
